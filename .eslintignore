@@ -1,0 +1,9 @@
+/_test/
+/build/
+/config/
+/dist/
+/*.js
+*.json
+/node_modules/
+default.vue
+*/vue.common.js

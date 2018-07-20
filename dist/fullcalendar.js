@@ -121,14 +121,14 @@ var elementPropHash = {
     rowSpan: true
 };
 var containerTagHash = {
-    "<tr": "tbody",
-    "<td": "tr"
+    '<tr': 'tbody',
+    '<td': 'tr'
 };
 function createElement(tagName, attrs, content) {
     var el = document.createElement(tagName);
     if (attrs) {
         for (var attrName in attrs) {
-            if (attrName === "style") {
+            if (attrName === 'style') {
                 applyStyle(el, attrs[attrName]);
             }
             else if (elementPropHash[attrName]) {
@@ -139,10 +139,10 @@ function createElement(tagName, attrs, content) {
             }
         }
     }
-    if (typeof content === "string") {
+    if (typeof content === 'string') {
         el.innerHTML = content; // shortcut. no need to process HTML in any way
     }
-    else if (content != null) {
+    else if (content !== null) {
         appendToElement(el, content);
     }
     return el;
@@ -168,7 +168,7 @@ function htmlToNodeList(html) {
 // assumes html already trimmed and tag names are lowercase
 function computeContainerTag(html) {
     return (containerTagHash[html.substr(0, 3) // faster than using regex
-    ] || "div");
+    ] || 'div');
 }
 function appendToElement(el, content) {
     var childNodes = normalizeContent(content);
@@ -195,7 +195,7 @@ function insertAfterElement(refEl, content) {
 exports.insertAfterElement = insertAfterElement;
 function normalizeContent(content) {
     var els;
-    if (typeof content === "string") {
+    if (typeof content === 'string') {
         els = htmlToNodeList(content);
     }
     else if (content instanceof Node) {
@@ -294,16 +294,16 @@ function applyStyle(el, props, propVal) {
 }
 exports.applyStyle = applyStyle;
 function applyStyleProp(el, name, val) {
-    if (el.classList[1] != "fc-time-grid-container") {
-        if (name === "height") {
-            el.style[name] = "100%";
+    if (el.classList[1] !== 'fc-time-grid-container') {
+        if (name === 'height') {
+            el.style[name] = '100%';
         }
         else {
             if (val === null) {
-                el.style[name] = "";
+                el.style[name] = '';
             }
-            else if (typeof val === "number" && PIXEL_PROP_RE.test(name)) {
-                el.style[name] = val + "px";
+            else if (typeof val === 'number' && PIXEL_PROP_RE.test(name)) {
+                el.style[name] = val + 'px';
             }
             else {
                 el.style[name] = val;
@@ -311,15 +311,15 @@ function applyStyleProp(el, name, val) {
         }
     }
     else {
-        if (name === "height") {
-            el.style[name] = "";
+        if (name === 'height') {
+            el.style[name] = '';
         }
         else {
             if (val === null) {
-                el.style[name] = "";
+                el.style[name] = '';
             }
-            else if (typeof val === "number" && PIXEL_PROP_RE.test(name)) {
-                el.style[name] = val + "px";
+            else if (typeof val === 'number' && PIXEL_PROP_RE.test(name)) {
+                el.style[name] = val + 'px';
             }
             else {
                 el.style[name] = val;

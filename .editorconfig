@@ -1,11 +1,29 @@
-# http://editorconfig.org
-
+# このファイルより上の階層の.editorconfigファイルは評価しない
 root = true
 
 [*]
-charset = utf-8
+# インデントはスペース2つ分
 indent_style = space
 indent_size = 2
-end_of_line = lf
-insert_final_newline = true
+# 文字コードはUTF-8
+charset = utf-8
+# 行末の空白文字を削除
 trim_trailing_whitespace = true
+# ファイルの末尾が改行でない時に補完
+insert_final_newline = true
+# 改行コードはLF
+end_of_line = lf
+# 一行は80文字まで
+max_line_length = 100
+
+[*.md]
+# Markdownの時は行末の空白文字を削除しない
+trim_trailing_whitespace = false
+
+[*.py]
+indent_size = 4
+indent_style = space
+
+[*.{js,java,go,c,cpp,tex}]
+trim_trailing_whitespace = true
+insert_final_newline = true
