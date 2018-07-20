@@ -18,7 +18,7 @@ export function applyStyleProp(el: HTMLElement, name: string, val) {
     if (name === "height") {
       el.style[name] = "100%";
     } else {
-      if (val === null) {
+      if (val == null) {
         el.style[name] = "";
       } else if (typeof val === "number" && PIXEL_PROP_RE.test(name)) {
         el.style[name] = val + "px";
@@ -30,7 +30,7 @@ export function applyStyleProp(el: HTMLElement, name: string, val) {
     if (name === "height") {
       el.style[name] = "";
     } else {
-      if (val === null) {
+      if (val == null) {
         el.style[name] = "";
       } else if (typeof val === "number" && PIXEL_PROP_RE.test(name)) {
         el.style[name] = val + "px";

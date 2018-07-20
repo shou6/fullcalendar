@@ -114,7 +114,7 @@ function sanitizeScrollbarWidth(width) {
 let _isLeftRtlScrollbars = null
 
 function getIsLeftRtlScrollbars() { // responsible for caching the computation
-  if (_isLeftRtlScrollbars === null) {
+  if (_isLeftRtlScrollbars == null) {
     _isLeftRtlScrollbars = computeIsLeftRtlScrollbars()
   }
   return _isLeftRtlScrollbars

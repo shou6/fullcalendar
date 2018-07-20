@@ -1,8 +1,6 @@
 // Creating
 // ----------------------------------------------------------------------------------------------------------------
-
 const elementPropHash = {
-  // when props given to createElement should be treated as props, not attributes
   className: true,
   colSpan: true,
   rowSpan: true
@@ -13,11 +11,7 @@ const containerTagHash = {
   '<td': 'tr'
 }
 
-export function createElement(
-  tagName: string,
-  attrs: object | null,
-  content?: ElementContent
-): HTMLElement {
+export function createElement(tagName: string, attrs: object | null, content?: ElementContent): HTMLElement {
   let el: HTMLElement = document.createElement(tagName)
 
   if (attrs) {
@@ -34,9 +28,10 @@ export function createElement(
 
   if (typeof content === 'string') {
     el.innerHTML = content // shortcut. no need to process HTML in any way
-  } else if (content !== null) {
+  } else if (content != null) {
     appendToElement(el, content)
   }
+
   return el
 }
 
@@ -60,16 +55,14 @@ function htmlToNodeList(html: string): NodeList {
 
 // assumes html already trimmed and tag names are lowercase
 function computeContainerTag(html: string) {
-  return (
-    containerTagHash[
-      html.substr(0, 3) // faster than using regex
-    ] || 'div'
-  )
+  return containerTagHash[
+    html.substr(0, 3) // faster than using regex
+  ] || 'div'
 }
+
 
 // Inserting / Removing
 // ----------------------------------------------------------------------------------------------------------------
-
 export type ElementContent = string | Node | NodeList | Node[]
 
 export function appendToElement(el: HTMLElement, content: ElementContent) {
@@ -83,16 +76,12 @@ export function appendToElement(el: HTMLElement, content: ElementContent) {
 export function prependToElement(parent: HTMLElement, content: ElementContent) {
   let newEls = normalizeContent(content)
   let afterEl = parent.firstChild || null // if no firstChild, will append to end, but that's okay, b/c there were no children
-
   for (let i = 0; i < newEls.length; i++) {
     parent.insertBefore(newEls[i], afterEl)
   }
 }
 
-export function insertAfterElement(
-  refEl: HTMLElement,
-  content: ElementContent
-) {
+export function insertAfterElement(refEl: HTMLElement, content: ElementContent) {
   let newEls = normalizeContent(content)
   let afterEl = refEl.nextSibling || null
 
@@ -106,9 +95,8 @@ function normalizeContent(content: ElementContent): NodeList | Node[] {
   if (typeof content === 'string') {
     els = htmlToNodeList(content)
   } else if (content instanceof Node) {
-    els = [content]
-  } else {
-    // assumed to be NodeList or Node[]
+    els = [ content ]
+  } else { // assumed to be NodeList or Node[]
     els = content
   }
   return els
@@ -120,31 +108,29 @@ export function removeElement(el: HTMLElement) {
   }
 }
 
+
 // Querying
 // ----------------------------------------------------------------------------------------------------------------
-
 // from https://developer.mozilla.org/en-US/docs/Web/API/Element/closest
 const matchesMethod =
   Element.prototype.matches ||
   (Element.prototype as any).matchesSelector ||
   (Element.prototype as any).msMatchesSelector
 
-const closestMethod =
-  Element.prototype.closest ||
-  function(selector) {
-    // polyfill
-    let el = this
-    if (!document.documentElement.contains(el)) {
-      return null
-    }
-    do {
-      if (elementMatches(el, selector)) {
-        return el
-      }
-      el = el.parentElement || el.parentNode
-    } while (el !== null && el.nodeType === 1)
+const closestMethod = Element.prototype.closest || function(selector) {
+  // polyfill
+  let el = this
+  if (!document.documentElement.contains(el)) {
     return null
   }
+  do {
+    if (elementMatches(el, selector)) {
+      return el
+    }
+    el = el.parentElement || el.parentNode
+  } while (el != null && el.nodeType === 1)
+  return null
+}
 
 export function elementClosest(el: HTMLElement, selector: string) {
   return closestMethod.call(el, selector)
@@ -156,11 +142,8 @@ export function elementMatches(el: HTMLElement, selector: string) {
 
 // accepts multiple subject els
 // returns a real array. good for methods like forEach
-export function findElements(
-  container: HTMLElement[] | HTMLElement,
-  selector: string
-): HTMLElement[] {
-  let containers = container instanceof HTMLElement ? [container] : container
+export function findElements(container: HTMLElement[] | HTMLElement, selector: string): HTMLElement[] {
+  let containers = container instanceof HTMLElement ? [ container ] : container
   let allMatches: HTMLElement[] = []
 
   for (let i = 0; i < containers.length; i++) {
@@ -170,21 +153,18 @@ export function findElements(
       allMatches.push(matches[j] as HTMLElement)
     }
   }
+
   return allMatches
 }
 
 // accepts multiple subject els
 // only queries direct child elements
-export function findChildren(
-  parent: HTMLElement[] | HTMLElement,
-  selector?: string
-): HTMLElement[] {
-  let parents = parent instanceof HTMLElement ? [parent] : parent
+export function findChildren(parent: HTMLElement[] | HTMLElement, selector?: string): HTMLElement[] {
+  let parents = parent instanceof HTMLElement ? [ parent ] : parent
   let allMatches = []
 
   for (let i = 0; i < parents.length; i++) {
     let childNodes = parents[i].children // only ever elements
-
     for (let j = 0; j < childNodes.length; j++) {
       let childNode = childNodes[j]
 
@@ -193,12 +173,13 @@ export function findChildren(
       }
     }
   }
+
   return allMatches
 }
 
+
 // Attributes
 // ----------------------------------------------------------------------------------------------------------------
-
 export function forceClassName(el: HTMLElement, className: string, bool) {
   if (bool) {
     el.classList.add(className)
@@ -207,9 +188,9 @@ export function forceClassName(el: HTMLElement, className: string, bool) {
   }
 }
 
+
 // Style
 // ----------------------------------------------------------------------------------------------------------------
-
 const PIXEL_PROP_RE = /(top|left|right|bottom|width|height)$/i
 
 export function applyStyle(el: HTMLElement, props: object, propVal?: any) {
@@ -222,7 +203,7 @@ export function applyStyleProp(el: HTMLElement, name: string, val) {
     if (name === 'height') {
       el.style[name] = '100%'
     } else {
-      if (val === null) {
+      if (val == null) {
         el.style[name] = ''
       } else if (typeof val === 'number' && PIXEL_PROP_RE.test(name)) {
         el.style[name] = val + 'px'
@@ -234,7 +215,7 @@ export function applyStyleProp(el: HTMLElement, name: string, val) {
     if (name === 'height') {
       el.style[name] = ''
     } else {
-      if (val === null) {
+      if (val == null) {
         el.style[name] = ''
       } else if (typeof val === 'number' && PIXEL_PROP_RE.test(name)) {
         el.style[name] = val + 'px'

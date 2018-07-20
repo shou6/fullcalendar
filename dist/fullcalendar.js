@@ -103,7 +103,7 @@ var extendStatics = Object.setPrototypeOf ||
 exports.__extends = function (d, b) {
     extendStatics(d, b);
     function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    d.prototype = b == null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 
 
@@ -111,11 +111,10 @@ exports.__extends = function (d, b) {
 /* 3 */
 /***/ (function(module, exports) {
 
+Object.defineProperty(exports, "__esModule", { value: true });
 // Creating
 // ----------------------------------------------------------------------------------------------------------------
-Object.defineProperty(exports, "__esModule", { value: true });
 var elementPropHash = {
-    // when props given to createElement should be treated as props, not attributes
     className: true,
     colSpan: true,
     rowSpan: true
@@ -142,7 +141,7 @@ function createElement(tagName, attrs, content) {
     if (typeof content === 'string') {
         el.innerHTML = content; // shortcut. no need to process HTML in any way
     }
-    else if (content !== null) {
+    else if (content != null) {
         appendToElement(el, content);
     }
     return el;
@@ -167,8 +166,8 @@ function htmlToNodeList(html) {
 }
 // assumes html already trimmed and tag names are lowercase
 function computeContainerTag(html) {
-    return (containerTagHash[html.substr(0, 3) // faster than using regex
-    ] || 'div');
+    return containerTagHash[html.substr(0, 3) // faster than using regex
+    ] || 'div';
 }
 function appendToElement(el, content) {
     var childNodes = normalizeContent(content);
@@ -201,8 +200,7 @@ function normalizeContent(content) {
     else if (content instanceof Node) {
         els = [content];
     }
-    else {
-        // assumed to be NodeList or Node[]
+    else { // assumed to be NodeList or Node[]
         els = content;
     }
     return els;
@@ -219,21 +217,20 @@ exports.removeElement = removeElement;
 var matchesMethod = Element.prototype.matches ||
     Element.prototype.matchesSelector ||
     Element.prototype.msMatchesSelector;
-var closestMethod = Element.prototype.closest ||
-    function (selector) {
-        // polyfill
-        var el = this;
-        if (!document.documentElement.contains(el)) {
-            return null;
-        }
-        do {
-            if (elementMatches(el, selector)) {
-                return el;
-            }
-            el = el.parentElement || el.parentNode;
-        } while (el !== null && el.nodeType === 1);
+var closestMethod = Element.prototype.closest || function (selector) {
+    // polyfill
+    var el = this;
+    if (!document.documentElement.contains(el)) {
         return null;
-    };
+    }
+    do {
+        if (elementMatches(el, selector)) {
+            return el;
+        }
+        el = el.parentElement || el.parentNode;
+    } while (el != null && el.nodeType === 1);
+    return null;
+};
 function elementClosest(el, selector) {
     return closestMethod.call(el, selector);
 }
@@ -299,7 +296,7 @@ function applyStyleProp(el, name, val) {
             el.style[name] = '100%';
         }
         else {
-            if (val === null) {
+            if (val == null) {
                 el.style[name] = '';
             }
             else if (typeof val === 'number' && PIXEL_PROP_RE.test(name)) {
@@ -315,7 +312,7 @@ function applyStyleProp(el, name, val) {
             el.style[name] = '';
         }
         else {
-            if (val === null) {
+            if (val == null) {
                 el.style[name] = '';
             }
             else if (typeof val === 'number' && PIXEL_PROP_RE.test(name)) {
@@ -1469,7 +1466,7 @@ function sanitizeScrollbarWidth(width) {
 // Logic for determining if, when the element is right-to-left, the scrollbar appears on the left side
 var _isLeftRtlScrollbars = null;
 function getIsLeftRtlScrollbars() {
-    if (_isLeftRtlScrollbars === null) {
+    if (_isLeftRtlScrollbars == null) {
         _isLeftRtlScrollbars = computeIsLeftRtlScrollbars();
     }
     return _isLeftRtlScrollbars;
@@ -4446,7 +4443,7 @@ var View = /** @class */ (function (_super) {
         if (end) {
             end = this.skipHiddenDays(end, -1, true);
         }
-        if (start === null || end === null || start < end) {
+        if (start == null || end == null || start < end) {
             return new UnzonedRange_1.default(start, end);
         }
         return null;

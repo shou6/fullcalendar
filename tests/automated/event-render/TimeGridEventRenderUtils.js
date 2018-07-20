@@ -1,6 +1,5 @@
-
 export function getTimeTexts() {
-  return $('.fc-event').map(function(i, eventEl) {
+  return $('.fc-event').map(function (i, eventEl) {
     return $(eventEl).find('.fc-time').text()
   }).get()
 }
@@ -44,11 +43,11 @@ function checkEventRenderingMatch(expectedRects, eventEls) {
 
     // horizontally contained AND vertically really similar?
     if (!(
-      elRect.left >= expectedRect.left &&
-      elRect.right <= expectedRect.right &&
-      Math.abs(elRect.top - expectedRect.top) < 1 &&
-      Math.abs(elRect.bottom - expectedRect.bottom) < 1
-    )) {
+        elRect.left >= expectedRect.left &&
+        elRect.right <= expectedRect.right &&
+        Math.abs(elRect.top - expectedRect.top) < 1 &&
+        Math.abs(elRect.bottom - expectedRect.bottom) < 1
+      )) {
       console.log('rects do not match')
       return false
     }
@@ -84,18 +83,19 @@ export function computeSpanRects(start, end) {
         .add(slotStruct.dayOffset, 'days')
         .add(slotStruct.endTime)
 
-      if (startTop === null) { // looking for the start
+      if (startTop == null) { // looking for the start
         coverage = (start - slotStart) / (slotEnd - slotStart)
-        startTop = (coverage > 0 && coverage <= 1)
-          ? (slotStruct.top + slotStruct.height * coverage)
-          : null
+        startTop = (coverage > 0 && coverage <= 1) ?
+          (slotStruct.top + slotStruct.height * coverage) :
+          null
       } else { // looking for the end
         coverage = (end - slotStart) / (slotEnd - slotStart)
         endTop = (coverage >= 0 && coverage < 1) // exclusive
-          ? (slotStruct.top + slotStruct.height * coverage)
-          : null
+          ?
+          (slotStruct.top + slotStruct.height * coverage) :
+          null
 
-        if (endTop !== null) { // found end
+        if (endTop != null) { // found end
           rects.push({
             left: dayStruct.left,
             right: dayStruct.right,
@@ -109,7 +109,7 @@ export function computeSpanRects(start, end) {
       }
     }
 
-    if (startTop !== null) { // could not find the start in this day
+    if (startTop != null) { // could not find the start in this day
       rects.push({
         left: dayStruct.left,
         right: dayStruct.right,
@@ -129,7 +129,7 @@ export function computeSpanRects(start, end) {
 function computeDays() {
   var dayEls = $('.fc-day-header[data-date]')
 
-  var days = dayEls.map(function(i, node) {
+  var days = dayEls.map(function (i, node) {
     var rect = node.getBoundingClientRect()
     return $.extend({}, rect, {
       date: FullCalendar.moment.parseZone(
@@ -145,7 +145,7 @@ function computeDays() {
 function computeSlots() {
   var slotEls = $('.fc-time-grid .fc-slats tr[data-time]')
 
-  var slots = slotEls.map(function(i, node) {
+  var slots = slotEls.map(function (i, node) {
     var rect = node.getBoundingClientRect()
     return $.extend({}, rect, {
       startTime: moment.duration(
