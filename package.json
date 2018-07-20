@@ -8,11 +8,9 @@
     "full-sized",
     "jquery-plugin"
   ],
-  "homepage": "https://fullcalendar.io/",
-  "bugs": "https://fullcalendar.io/wiki/Reporting-Bugs/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fullcalendar/fullcalendar.git"
+    "url": "https://github.com/shou6/fullcalendar.git"
   },
   "license": "MIT",
   "author": {

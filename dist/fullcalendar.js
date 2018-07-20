@@ -1,6 +1,6 @@
 /*!
  * FullCalendar v4.0.0-alpha
- * Docs & License: https://fullcalendar.io/
+ * Docs & License: undefined
  * (c) 2018 Adam Shaw
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -9,9 +9,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define(["moment", "superagent"], factory);
 	else if(typeof exports === 'object')
-		exports["FullCalendar"] = factory(require("moment"), require("superagent"));
+		factory(require("moment"), require("superagent"));
 	else
-		root["FullCalendar"] = factory(root["moment"], root["superagent"]);
+		factory(root["moment"], root["superagent"]);
 })(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_58__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -115,19 +115,20 @@ exports.__extends = function (d, b) {
 // ----------------------------------------------------------------------------------------------------------------
 Object.defineProperty(exports, "__esModule", { value: true });
 var elementPropHash = {
+    // when props given to createElement should be treated as props, not attributes
     className: true,
     colSpan: true,
     rowSpan: true
 };
 var containerTagHash = {
-    '<tr': 'tbody',
-    '<td': 'tr'
+    "<tr": "tbody",
+    "<td": "tr"
 };
 function createElement(tagName, attrs, content) {
     var el = document.createElement(tagName);
     if (attrs) {
         for (var attrName in attrs) {
-            if (attrName === 'style') {
+            if (attrName === "style") {
                 applyStyle(el, attrs[attrName]);
             }
             else if (elementPropHash[attrName]) {
@@ -138,7 +139,7 @@ function createElement(tagName, attrs, content) {
             }
         }
     }
-    if (typeof content === 'string') {
+    if (typeof content === "string") {
         el.innerHTML = content; // shortcut. no need to process HTML in any way
     }
     else if (content != null) {
@@ -166,8 +167,8 @@ function htmlToNodeList(html) {
 }
 // assumes html already trimmed and tag names are lowercase
 function computeContainerTag(html) {
-    return containerTagHash[html.substr(0, 3) // faster than using regex
-    ] || 'div';
+    return (containerTagHash[html.substr(0, 3) // faster than using regex
+    ] || "div");
 }
 function appendToElement(el, content) {
     var childNodes = normalizeContent(content);
@@ -194,13 +195,14 @@ function insertAfterElement(refEl, content) {
 exports.insertAfterElement = insertAfterElement;
 function normalizeContent(content) {
     var els;
-    if (typeof content === 'string') {
+    if (typeof content === "string") {
         els = htmlToNodeList(content);
     }
     else if (content instanceof Node) {
         els = [content];
     }
-    else { // assumed to be NodeList or Node[]
+    else {
+        // assumed to be NodeList or Node[]
         els = content;
     }
     return els;
@@ -217,20 +219,21 @@ exports.removeElement = removeElement;
 var matchesMethod = Element.prototype.matches ||
     Element.prototype.matchesSelector ||
     Element.prototype.msMatchesSelector;
-var closestMethod = Element.prototype.closest || function (selector) {
-    // polyfill
-    var el = this;
-    if (!document.documentElement.contains(el)) {
-        return null;
-    }
-    do {
-        if (elementMatches(el, selector)) {
-            return el;
+var closestMethod = Element.prototype.closest ||
+    function (selector) {
+        // polyfill
+        var el = this;
+        if (!document.documentElement.contains(el)) {
+            return null;
         }
-        el = el.parentElement || el.parentNode;
-    } while (el !== null && el.nodeType === 1);
-    return null;
-};
+        do {
+            if (elementMatches(el, selector)) {
+                return el;
+            }
+            el = el.parentElement || el.parentNode;
+        } while (el !== null && el.nodeType === 1);
+        return null;
+    };
 function elementClosest(el, selector) {
     return closestMethod.call(el, selector);
 }
@@ -291,14 +294,37 @@ function applyStyle(el, props, propVal) {
 }
 exports.applyStyle = applyStyle;
 function applyStyleProp(el, name, val) {
-    if (val == null) {
-        el.style[name] = '';
-    }
-    else if (typeof val === 'number' && PIXEL_PROP_RE.test(name)) {
-        el.style[name] = val + 'px';
+    if (el.classList[1] != "fc-time-grid-container") {
+        if (name === "height") {
+            el.style[name] = "100%";
+        }
+        else {
+            if (val === null) {
+                el.style[name] = "";
+            }
+            else if (typeof val === "number" && PIXEL_PROP_RE.test(name)) {
+                el.style[name] = val + "px";
+            }
+            else {
+                el.style[name] = val;
+            }
+        }
     }
     else {
-        el.style[name] = val;
+        if (name === "height") {
+            el.style[name] = "";
+        }
+        else {
+            if (val === null) {
+                el.style[name] = "";
+            }
+            else if (typeof val === "number" && PIXEL_PROP_RE.test(name)) {
+                el.style[name] = val + "px";
+            }
+            else {
+                el.style[name] = val;
+            }
+        }
     }
 }
 exports.applyStyleProp = applyStyleProp;
